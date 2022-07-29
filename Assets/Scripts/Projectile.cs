@@ -46,7 +46,14 @@ public class Projectile : MonoBehaviour {
 	}
 	
 	void Arrived() {
-		df.Move();
+		if (gameObject.CompareTag("Bone"))
+        {
+            df.Move();
+        }
+        else if (gameObject.CompareTag("Lettuce"))
+        {
+            Debug.Log("jabba eat");
+        }
         transform.parent = null;
         this.enabled = false;
 	}

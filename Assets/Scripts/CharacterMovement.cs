@@ -16,6 +16,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private Collider2D bone2;
     private bool canThrow;
 
+    [SerializeField] private Collider2D[] interactables;
+
     
     // Start is called before the first frame update
     void Start()
@@ -43,6 +45,42 @@ public class CharacterMovement : MonoBehaviour
 
     public void OnBone(InputAction.CallbackContext context)
     {
+        Debug.Log("press bone");
+        Collider2D touching = null;
+        foreach (Collider2D c in interactables)
+        {
+            touching = collider2d.IsTouching(c) ? c : touching;
+        }
+        if (touching != null)
+        {
+            touching.transform.parent = this.transform;
+            canThrow = false;
+        }
+        else if (transform.childCount > 0 && canThrow)
+        {
+            Debug.Log("more than 1 child and canThrow");
+            Transform interactable = transform.GetChild(0);
+            interactable.GetComponent<Projectile>().enabled = true;
+            /*
+            if (interactable.CompareTag("Bone"))
+            {
+                interactable.GetComponent<Projectile>().enabled = true;
+            }
+            else if (interactable.CompareTag("Lettuce"))
+            {
+                interactable.parent = null;
+                Lettuce l = interactable.GetComponent<Lettuce>();
+                l.enabled = true;
+                l.toFollow = this.transform;
+            }
+            */
+        }
+        else
+        {
+            Debug.Log(transform.childCount + ", canThrow: " + canThrow);
+        }
+        
+        /*
         bool touch1 = collider2d.IsTouching(bone1);
         bool touch2 = collider2d.IsTouching(bone2);
 
@@ -59,6 +97,7 @@ public class CharacterMovement : MonoBehaviour
             Transform bone = transform.GetChild(0);
             bone.GetComponent<Projectile>().enabled = true;
         }
+        */
     }
 
     
