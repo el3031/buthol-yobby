@@ -12,11 +12,10 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float force;
     [SerializeField] private float _maxHorizontalSpeed;
 
-    [SerializeField] private Collider2D bone1;
-    [SerializeField] private Collider2D bone2;
     private bool canThrow;
 
     [SerializeField] private Collider2D[] interactables;
+    [SerializeField] private Jabba jabba;
 
     
     // Start is called before the first frame update
@@ -61,6 +60,11 @@ public class CharacterMovement : MonoBehaviour
             Debug.Log("more than 1 child and canThrow");
             Transform interactable = transform.GetChild(0);
             interactable.GetComponent<Projectile>().enabled = true;
+
+            if (interactable.CompareTag("Lettuce"))
+            {
+                jabba.toFollow = this.transform;
+            }
             /*
             if (interactable.CompareTag("Bone"))
             {
